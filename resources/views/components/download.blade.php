@@ -10,4 +10,8 @@
   @else
     <span class="text-zinc-500"><span class="sr-only">{{ $system }} game:</span> {{ $name }} ({{ $size }})</span>
   @endauth
+
+  @if ($downloads > 0)
+    <div aria-hidden="true" class="text-xs">Downloaded {{ number_format($downloads) }} {{ Str::plural('time', $downloads) }}</div>
+  @endif
 </li>

@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use App\Models\Download as DL;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Storage;
@@ -9,6 +10,7 @@ use Illuminate\View\Component;
 
 class Download extends Component
 {
+    public int $downloads;
     public string $name;
     public string $size;
 
@@ -19,9 +21,12 @@ class Download extends Component
         public string $system,
         public string $filename
     ) {
+        $filepath = sprintf('%s/%s', $system, $filename);
+
+        $this->downloads = DL::where('file', '=', $filepath)->count();
+
         $this->name = pathinfo(pathinfo($filename, PATHINFO_FILENAME), PATHINFO_FILENAME);
 
-        $filepath = sprintf('%s/%s', $system, $filename);
         $filesize = Storage::size($filepath);
         $units = ['b', 'Kb', 'Mb', 'Gb', 'Tb'];
         $bytes = max($filesize, 0);

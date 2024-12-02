@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -43,7 +43,7 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <!-- Responsive Settings Options -->
-        <div class="pt-1 pb-1 border-t border-gray-200">
+        <div class="pt-1 pb-1 border-y border-gray-200">
             <!-- Authentication -->
             @auth
                 <form method="POST" action="{{ route('logout') }}">
