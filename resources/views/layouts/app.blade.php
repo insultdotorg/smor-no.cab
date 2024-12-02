@@ -31,6 +31,10 @@
             <main>
                 {{ $slot }}
             </main>
+
+            <div class="text-zinc-400 text-center pb-12">
+                <a href="https://github.com/insultdotorg/smor-no.cab" target="_blank" rel="noreferrer noopener" class="underline decoration-2">Source</a>
+            </div>
         </div>
     </body>
 </html>
