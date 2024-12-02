@@ -32,7 +32,7 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app/private'),
+            'root' => dirname(base_path()).'/roms',
             'serve' => true,
             'throw' => false,
         ],

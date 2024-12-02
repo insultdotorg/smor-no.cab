@@ -1,20 +1,35 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $files = collect(Storage::allFiles())->filter(function ($filePath) {
+        return Str::endsWith($filePath, '.zip');
+    })->mapToGroups(function ($filePath) {
+        list($system, $fileName) = explode('/', $filePath);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+        return [$system => $fileName];
+    });
+
+    return view('dashboard', [
+        'files' => $files
+    ]);
+})->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/', function (Request $request) {
+        $file = $request->file;
+
+        if (Storage::exists($file)) {
+            return response()->download(Storage::path($file));
+        }
+        else {
+            return redirect()->route('dashboard');
+        }
+    })->name('download');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
