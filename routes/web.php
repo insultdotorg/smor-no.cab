@@ -2,6 +2,7 @@
 
 use App\Models\Download;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -39,7 +40,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/stats', function (Request $request) {
-    abort_unless($request->get('bacon') === 'thick-cut', 404);
+    abort_unless(Hash::check($request->get('bacon'), env('STATS_PW') ), 404);
 
     $files = collect(Storage::allFiles())->filter(function ($filePath) {
         return Str::endsWith($filePath, '.zip');
